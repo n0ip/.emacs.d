@@ -6,6 +6,16 @@
 
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 
+(add-to-list 'load-path "~/.emacs.d/")
+
+(require 'cl)
+
+;; pg.el (byte-compiled) v.0.12
+;; http://www.online-marketwatch.com/pgel/pg.el
+;; pg_hba: hostnossl all all 127.0.0.1/32 md5
+(require 'pg)
+
+
 (unless (require 'el-get nil t)
   (url-retrieve
    "https://github.com/dimitri/el-get/raw/master/el-get-install.el"
@@ -360,45 +370,44 @@ to the previously saved position"
 ;; Сортировать буферы по теме
 (setq ibuffer-saved-filter-groups
       (quote (("default"
-               ("SYS"       (or
-                             (mode . dired-mode)
-                             (name . "^\\*scratch\\*$")
-                             (name . "^\\*Messages\\*$")))
-               ("REPL"      (or
-                             (name . "^\\*inferior-lisp.*")
-                             (name . "^\\*slime-events.*")
-                             (name . "^\\*slime-repl.*")
-                             (name . "^\\*Python.*")
-                             (name . "*\\*sldb.*")))
-               ("SHELL"     (or
-                             (name . "^\\*Shell\\*$")
-                             (name . "^\\*grep\\*$")))
                ("C/CPP"     (or
-                             (mode . c-mode)
-                             (mode . c++-mode)))
+                              (mode . c-mode)
+                              (mode . c++-mode)))
+               ("ERLANG"    (or
+                              (mode . erlang-mode)))
+               ("JS"        (or
+                              (mode . espresso-mode)))
+               ("CSS"       (or
+                              (mode . css-mode)))
+               ("HTML"      (or
+                              (mode . html-mode)
+                              (mode . closure-template-html-mode)))
+               ("CHAT"      (or
+                              (name . "^\\*---.*")))
+               ("CONF"      (or
+                              (name . "^\\*===.*")))
+               ("JABBER"    (or
+                              (name . "^\\*-jabber-roster.*")))
+               ("SYS"       (or
+                              (mode . dired-mode)
+                              (name . "^\\*scratch\\*$")
+                              (name . "^\\*Messages\\*$")))
+               ("SHELL"     (or
+                              (name . "^\\*Shell\\*$")
+                              (name . "^\\*grep\\*$")))
+               ("REPL"      (or
+                              (name . "^\\*inferior-lisp.*")
+                              (name . "^\\*slime-events.*")
+                              (name . "^\\*slime-repl.*")
+                              (name . "^\\*Python.*")
+                              (name . "*\\*sldb.*")))
                ("ORG"       (or
                               (mode . org-mode)))
                ("LISP"      (or
                               (mode . lisp-mode)))
-               ("ERLANG"    (or
-                              (mode . erlang-mode)))
-               ("HTML"       (or
-                              (mode . html-mode)
-                              (mode . closure-template-html-mode)))
-               ("JS"         (or
-                              (mode . espresso-mode)))
-               ("CSS"        (or
-                              (mode . css-mode)))
-               ("ELISP"      (or
+               ("ELISP"     (or
                               (mode . elisp-mode)
-                              (mode . emacs-lisp-mode)))
-               ("CHAT"       (or
-                              (name . "^\\*---.*")))
-               ("CONF"       (or
-                              (name . "^\\*===.*")))
-               ("JABBER"     (or
-                              (name . "^\\*-jabber-roster.*")))
-               ))))
+                              (mode . emacs-lisp-mode)))))))
 (add-hook 'ibuffer-mode-hook
           (lambda ()
             (ibuffer-switch-to-saved-filter-groups
@@ -1300,7 +1309,7 @@ to the previously saved position"
 ; Do not prompt to confirm evaluation
 ; This may be dangerous - make sure you understand the consequences
 ; of setting this -- see the docstring for details
-;; (setq org-confirm-babel-evaluate nil)
+ (setq org-confirm-babel-evaluate nil)
 
 
 ;; FORMATTING
