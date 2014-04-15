@@ -1,19 +1,10 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                                           ;;
 ;;    EMACS configuration file by Rigidus    ;;
 ;;                                           ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-
-(add-to-list 'load-path "~/.emacs.d/")
-
-(require 'cl)
-
-;; pg.el (byte-compiled) v.0.12
-;; http://www.online-marketwatch.com/pgel/pg.el
-;; pg_hba: hostnossl all all 127.0.0.1/32 md5
-(require 'pg)
 
 (unless (require 'el-get nil t)
   (url-retrieve
@@ -22,29 +13,6 @@
      (end-of-buffer)
      (eval-print-last-sexp))))
 
-
-;;(add-to-list 'load-path "~/.emacs.d/el-get/emms/")
-;;(require 'emms-setup)
-;;(emms-standard)
-;;(emms-default-players)
-
-
-;; EXPAND_REGION
-(add-to-list 'load-path "~/.emacs.d/expand-region")
-(require 'expand-region)
-;; (global-set-key (kbd "C-c =") 'er/expand-region)
-
-;; MULTIPLE_CURSORS
-(add-to-list 'load-path "~/.emacs.d/multiple-cursors")
-(require 'multiple-cursors)
-
-(global-set-key (kbd "C-c >") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-c <") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-c <") 'mc/mark-all-like-this)
-(global-set-key (kbd "C-c C-c >") 'mc/edit-lines)
-
-
-(defvar jc/mc-search--last-term nil)
 
 (defun jc/mc-search (search-command)
   ;; Read new search term when not repeated command or applying to fake cursors
@@ -63,9 +31,6 @@
   "Simplified version of backward search that supports multiple cursors"
   (interactive)
   (jc/mc-search 'search-backward))
-
-(define-key mc/keymap (kbd "C-c s") 'jc/mc-search-forward)
-(define-key mc/keymap (kbd "C-c r") 'jc/mc-search-backward)
 
 ;; C-x C-e eval-and-replace
 
@@ -87,7 +52,7 @@
 
 ;; SLIME
 ;; (add-to-list 'load-path "~/.emacs.d/slime-20110829-cvs") ;; Путь к slime
-(add-to-list 'load-path "~/quicklisp/dists/quicklisp/software/slime-20130720-cvs/") ;; Путь к slime
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/slime") ;; Путь к slime
 (require 'slime)
 (setq slime-net-coding-system 'utf-8-unix)
 (slime-setup '(slime-fancy))
@@ -395,45 +360,45 @@ to the previously saved position"
 ;; Сортировать буферы по теме
 (setq ibuffer-saved-filter-groups
       (quote (("default"
-               ("C/CPP"     (or
-                              (mode . c-mode)
-                              (mode . c++-mode)))
-               ("ERLANG"    (or
-                              (mode . erlang-mode)))
-               ("JS"        (or
-                              (mode . espresso-mode)))
-               ("CSS"       (or
-                              (mode . css-mode)))
-               ("HTML"      (or
-                              (mode . html-mode)
-                              (mode . closure-template-html-mode)))
-               ("CHAT"      (or
-                              (name . "^\\*---.*")))
-               ("CONF"      (or
-                              (name . "^\\*===.*")))
-               ("JABBER"    (or
-                              (name . "^\\*-jabber-roster.*")))
                ("SYS"       (or
-                              (mode . dired-mode)
-                              (name . "^\\*scratch\\*$")
-                              (name . "^\\*Messages\\*$")))
-               ("SHELL"     (or
-                              (name . "^\\*Shell\\*$")
-                              (name . "^\\*grep\\*$")))
+                             (mode . dired-mode)
+                             (name . "^\\*scratch\\*$")
+                             (name . "^\\*Messages\\*$")))
                ("REPL"      (or
-                              (name . "^\\*inferior-lisp.*")
-                              (name . "^\\*slime-events.*")
-                              (name . "^\\*slime-repl.*")
-                              (name . "^\\*Python.*")
-                              (name . "*\\*sldb.*")))
+                             (name . "^\\*inferior-lisp.*")
+                             (name . "^\\*slime-events.*")
+                             (name . "^\\*slime-repl.*")
+                             (name . "^\\*Python.*")
+                             (name . "*\\*sldb.*")))
+               ("SHELL"     (or
+                             (name . "^\\*Shell\\*$")
+                             (name . "^\\*grep\\*$")))
+               ("C/CPP"     (or
+                             (mode . c-mode)
+                             (mode . c++-mode)))
                ("ORG"       (or
                               (mode . org-mode)))
                ("LISP"      (or
                               (mode . lisp-mode)))
-               ("ELISP"     (or
+               ("ERLANG"    (or
+                              (mode . erlang-mode)))
+               ("HTML"       (or
+                              (mode . html-mode)
+                              (mode . closure-template-html-mode)))
+               ("JS"         (or
+                              (mode . espresso-mode)))
+               ("CSS"        (or
+                              (mode . css-mode)))
+               ("ELISP"      (or
                               (mode . elisp-mode)
-                              (mode . emacs-lisp-mode)))))))
-
+                              (mode . emacs-lisp-mode)))
+               ("CHAT"       (or
+                              (name . "^\\*---.*")))
+               ("CONF"       (or
+                              (name . "^\\*===.*")))
+               ("JABBER"     (or
+                              (name . "^\\*-jabber-roster.*")))
+               ))))
 (add-hook 'ibuffer-mode-hook
           (lambda ()
             (ibuffer-switch-to-saved-filter-groups
@@ -755,19 +720,6 @@ to the previously saved position"
 (setq jabber-history-enabled t)
 (setq jabber-history-muc-enabled t)
 (setq jabber-history-size-limit 1024000000)
-
-;; ;; Не закрывать буфер ростера при активном подключении
-;; (my-hook-for (kill-buffer-query-functions)
-;;   (not
-;;    (and *jabber-connected*
-;;     (eql (current-buffer)
-;;           (get-buffer jabber-roster-buffer)))))
-
-;; ;; Не закрывать буферы с активными конференциями
-;; (my-hook-for (kill-buffer-query-functions)
-;;   (not (and jabber-group
-;;             (assoc jabber-group *jabber-active-groupchats*))))
-
 ;; M-x jabber-edit-bookmarks - для редактирвания закладок
 
 
@@ -894,46 +846,6 @@ to the previously saved position"
       'mail-send-hook))
 
 
-;; MAILCRYPT
-;; Commands:
-;;   M-x mc-encrypt.
-;;   M-x mc-wl-decrypt-message
-;; http://box.matto.nl/wanderlustgpg.html
-(load-library "mailcrypt") ; provides "mc-setversion"
-(mc-setversion "gpg")    ; for PGP 2.6 (default); also "5.0" and "gpg"
-
-(autoload 'mc-install-write-mode "mailcrypt" nil t)
-(autoload 'mc-install-read-mode "mailcrypt" nil t)
-(add-hook 'mail-mode-hook 'mc-install-write-mode)
-
-(require 'mailcrypt)
-(add-hook 'wl-summary-mode-hook 'mc-install-read-mode)
-(add-hook 'wl-mail-setup-hook 'mc-install-write-mode)
-
-(defun mc-wl-verify-signature ()
-  (interactive)
-  (save-window-excursion
-    (wl-summary-jump-to-current-message)
-    (mc-verify)))
-
-(defun mc-wl-decrypt-message ()
-  (interactive)
-  (save-window-excursion
-    (wl-summary-jump-to-current-message)
-    (let ((inhibit-read-only t))
-      (mc-decrypt))))
-
-(eval-after-load "mailcrypt"
-  '(setq mc-modes-alist
-       (append
-        (quote
-         ((wl-draft-mode (encrypt . mc-encrypt-message)
-            (sign . mc-sign-message))
-          (wl-summary-mode (decrypt . mc-wl-decrypt-message)
-            (verify . mc-wl-verify-signature))))
-        mc-modes-alist)))
-
-
 ;; ;; Load CEDET.
 ;; ;; See cedet/common/cedet.info for configuration details.
 ;; (load-file "~/.emacs.d/cedet/common/cedet.el")
@@ -985,126 +897,6 @@ to the previously saved position"
 ;; GOTOLINE
 (global-set-key [?\M-g] 'goto-line)
 (global-set-key (kbd "\e\eg") 'goto-line)
-
-
-
-;; DICTEM
-;; http://filonenko-mikhail.blogspot.com/2012/02/emacs.html
-;; Бегаете по переводимому тексту. На незнакомом слове нажали C-c d
-;; и в отдельном буфере в отдельном окне отображается перевод. Между
-;; тем фокус остается там же где и был, но некотором
-;; слове. Переместились к следующему непонятному слову, нажали C-c
-;; d, и в уже открытом окне с буфером появится перевод нового слова.
-
-(add-to-list 'load-path "~/.emacs.d/dictem-1.0.2")
-(require 'dictem)
-
-(setq dictem-use-existing-buffer t)
-
-(setq dictem-use-user-databases-only t)
-
-;;; redefined function
-(defun dictem-ensure-buffer ()
-  "If current buffer is not a dictem buffer, create a new one."
-  (let* ((dictem-buffer (get-buffer-create dictem-buffer-name))
-         (dictem-window (get-buffer-window dictem-buffer))
-         (window-configuration (current-window-configuration))
-         (selected-window (frame-selected-window)))
-    (if (window-live-p dictem-window)
-        (select-window dictem-window)
-      (switch-to-buffer-other-window dictem-buffer))
-
-    (if (dictem-mode-p)
-        (progn
-          (if dictem-use-content-history
-              (setq dictem-content-history
-                    (cons (list (buffer-substring
-                                 (point-min) (point-max))
-                                (point)) dictem-content-history)))
-          (setq buffer-read-only nil)
-          (erase-buffer))
-      (progn
-        (dictem-mode)
-
-        (make-local-variable 'dictem-window-configuration)
-        (make-local-variable 'dictem-selected-window)
-        (make-local-variable 'dictem-content-history)
-        (setq dictem-window-configuration window-configuration)
-        (setq dictem-selected-window selected-window)))))
-
-(setq dictem-server "dictd.xdsl.by")
-(setq dictem-exclude-databases '("ger-" "-ger" "fra-" "-fra"))
-
-(dictem-initialize)
-
-(add-hook 'dictem-postprocess-match-hook
-          'dictem-postprocess-match)
-
-(add-hook 'dictem-postprocess-definition-hook
-          'dictem-postprocess-definition-separator)
-
-(add-hook 'dictem-postprocess-definition-hook
-          'dictem-postprocess-definition-hyperlinks)
-
-(add-hook 'dictem-postprocess-show-info-hook
-          'dictem-postprocess-definition-hyperlinks)
-
-(add-hook 'dictem-postprocess-definition-hook
-          'dictem-postprocess-each-definition)
-
-(setq dictem-user-databases-alist
-      '(("_en-ru"  . ("mueller7" "korolew_en-ru" "en-ru")); "dict://dict.org:2628/web1913"))
-        ("_en-en"  . ("foldoc" "gcide" "wn"))
-        ("_ru-ru"  . ("beslov" "ushakov" "ozhegov" "brok_and_efr"))
-        ("_ru-en" . ("ru-en"))
-        ("_unidoc" . ("susv3" "man" "info" "howto" "rfc"))
-        ))
-
-(define-key dictem-mode-map [tab] 'dictem-next-link)
-(define-key dictem-mode-map [(backtab)] 'dictem-previous-link)
-
-;;; http://paste.lisp.org/display/89086
-(defun dictem-run-define-at-point-with-query ()
-  "Query the default dict server with the word read in within this function."
-  (interactive)
-  (let* ((default-word (thing-at-point 'symbol))
-         (default-prompt (concat "Lookup Word "
-                                 (if default-word
-                                     (concat "(" default-word ")") nil)
-                                 ": "))
-         (dictem-query
-          (funcall #'(lambda (str)
-                       "Remove Whitespace from beginning and end of a string."
-                       (replace-regexp-in-string "^[ \n\t]*\\(.*?\\)[ \n\t]*$"
-                                                 "\\1"
-                                                 str))
-                   (read-string default-prompt nil nil default-word))))
-    (if (= (length dictem-query) 0) nil
-      (dictem-run 'dictem-base-search "_en-ru" dictem-query "."))))
-
-(defun dictem-run-define-at-point ()
-  "dictem look up for thing at point"
-  (interactive)
-  (let* ((default-word (thing-at-point 'symbol))
-         (selected-window (frame-selected-window))
-         (dictem-query
-          (funcall #'(lambda (str)
-                       "Remove Whitespace from beginning and end of a string."
-                       (replace-regexp-in-string "^[ \n\t]*\\(.*?\\)[ \n\t]*$"
-                                                 "\\1"
-                                                 str))
-                   default-word)))
-    (if (= (length dictem-query) 0)
-        nil
-      (progn
-        (dictem-run 'dictem-base-search "_en-ru" dictem-query ".")
-        (select-window selected-window)))))
-
-(global-set-key "\C-cd" 'dictem-run-define-at-point)
-(global-set-key "\C-cz" 'dictem-run-define-at-point-with-query)
-
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;; UTILITES ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1473,6 +1265,8 @@ to the previously saved position"
 ;;
 ;; Org Babel
 ;;
+;; (require 'el-get nil t)
+;; sudo apt-get install ditaa
 (require 'ob-tangle)
 (setq org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
 ;; (setq org-plantuml-jar-path "~/java/plantuml.jar")
@@ -1506,12 +1300,8 @@ to the previously saved position"
 ; Do not prompt to confirm evaluation
 ; This may be dangerous - make sure you understand the consequences
 ; of setting this -- see the docstring for details
-(setq org-confirm-babel-evaluate nil)
+;; (setq org-confirm-babel-evaluate nil)
 
-
-;; Minors
-(which-function-mode)
-;; (hs-minor-mode)
 
 ;; FORMATTING
 
